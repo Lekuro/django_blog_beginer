@@ -1,0 +1,29 @@
+git clone url
+cd foulder_name
+python3 -m venv venv
+source venv/bin/activate
+pip install django
+django-admin startproject blogengin
+cd blogengin
+python manago.py startapp blogengin
+
+python manage.py makemigrations
+python manage.py migrate
+python manage.py runserver
+./manage.py runserver
+
+ModelViewControler=mvc
+
+python manage.py shell
+from .models import BlogPost
+p=BlogPost(title='posttitle',slug='postslug',body='postbody')
+p.id
+p.save()
+p.id
+p1=BlogPost.objects.create(title='post_title',slug='post_slug',body='post_body')
+dir(p)
+BlogPost.objects.all()
+post=BlogPost.objects.get(slug='postslug')
+post=BlogPost.objects.get(slug__iexact='PostSlug')
+query_set=BlogPost.objects.filter(slug__contains='lug')
+exit()
