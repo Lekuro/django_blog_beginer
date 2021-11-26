@@ -48,3 +48,45 @@ model.__name__
 model.__name__.lower()
 BlogPost.mro()
 exit()
+
+./manage.py shell
+from blog.forms import *
+tf=TagForm()
+tf
+dir(tf)
+tf.is_bound    False
+tf.is_valid()  False
+d={title='',slug=''}
+tf=TagForm(d)
+tf.is_bound    True
+tf.is_valid()  False
+tf.errors     
+dir(tf)
+tf.cleaned_data   {}
+d={title='Title Some',slug='slug-Some'}
+tf=TagForm(d)
+tf.is_valid()  True
+tf.errors         {}
+tf.cleaned_data
+from blog.models import BlogTag
+tag=BlogTag(title=tf.cleaned_data['title'],slug=tf.cleaned_data.get('slug'))
+tag
+tag.save()
+tag.id
+exit()
+
+./manage.py shell
+from blog.forms import *
+d={title='Title tag Some',slug='slug-tag-Some'}
+tf=TagForm(d)
+tf.is_bound    True
+tf.is_valid()  True
+tf.cleaned_data
+t=tf.save()
+t
+exit()
+
+./manage.py shell
+l=['one','ONE','One','two','TWO','Two']
+sorted(l)
+exit()
