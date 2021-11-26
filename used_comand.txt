@@ -15,7 +15,7 @@ python manage.py runserver
 ModelViewControler=mvc
 
 python manage.py shell
-from .models import BlogPost
+from blog.models import BlogPost
 p=BlogPost(title='posttitle',slug='postslug',body='postbody')
 p.id
 p.save()
@@ -26,4 +26,16 @@ BlogPost.objects.all()
 post=BlogPost.objects.get(slug='postslug')
 post=BlogPost.objects.get(slug__iexact='PostSlug')
 query_set=BlogPost.objects.filter(slug__contains='lug')
+exit()
+
+./manage.py shell
+from blog.models import *
+t = BlogTag.objects.create(title='TagName',slug='TagSlug')
+BlogPost.objects.values()
+p=BlogPost.objects.get(slug='postslug')
+p
+p.tags
+p.tags.add(t)
+p.tags.all()
+t.posts.all()
 exit()

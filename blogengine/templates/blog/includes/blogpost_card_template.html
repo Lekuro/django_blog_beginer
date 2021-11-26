@@ -1,0 +1,17 @@
+<div class="card">
+    <div class="card-header">
+        {{blogpost.date_pub}}
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">{{blogpost.title}}</h5>
+        <p class="card-text">{{blogpost.body|truncatewords:15}}</p><!-- take only 15 words -->
+        <!-- <a href="{% url 'blogpost_detail_endpoint' slug=blogpost.slug %}" class="btn btn-primary">Read</a> -->
+        <a href="{{blogpost.get_absolute_url}}" class="btn btn-primary">Read</a>
+    </div>
+    <div class="card-footer text-muted">
+        Tags:
+        {% for tag in blogpost.tags.all %}
+        <a href="{{tag.get_absolute_url}}">{{tag.title}}</a>
+        {% endfor %}
+    </div>
+</div>
