@@ -1,13 +1,13 @@
 {% extends 'blog/base_blog.html' %}
 
 {% block title %}
-{{tag.title}} - {{block.super}}
+{{blogtag.title}} - {{block.super}}
 {% endblock %}
 
 {% block content %}
-<h1 class="mb-5">Post with "{{tag.title|title}}" tag:</h1>
+<h1 class="mb-5">Post with "{{blogtag.title|title}}" tag:</h1>
 <!-- title is a filter that return firs letter capitalize -->
-{% for blogpost in tag.posts.all %}
+{% for blogpost in blogtag.posts.all %}
 {% include 'blog/includes/blogpost_card_template.html' %}
 {% endfor %}
 {% endblock %}

@@ -39,3 +39,12 @@ p.tags.add(t)
 p.tags.all()
 t.posts.all()
 exit()
+
+./manage.py shell
+from blog.models import *
+model=BlogPost
+model
+model.__name__
+model.__name__.lower()
+BlogPost.mro()
+exit()
