@@ -16,6 +16,22 @@ def tags_list(request):
     return render(request, 'blog/tags_list.html', context={'tags': tags})
 
 
+class TagUpdateView(View):
+    def get(self, request, slug):
+        tag = BlogTag.objects.get(slug__iexact=slug)
+        bound_form = TagForm(instance=tag)
+        return render(request, 'blog/tag_update.html', context={'form': bound_form, 'tag': tag})
+
+    def post(self, request, slug):
+        tag = BlogTag.objects.get(slug__iexact=slug)
+        bound_form = TagForm(request.POST, instance=tag)
+
+        if bound_form.is_valid():
+            edited_tag = bound_form.save()
+            return redirect(edited_tag)
+        return render(request, 'blog/tag_update.html', context={'form': bound_form, 'tag': tag})
+
+
 class BlogPostCreateView(ObjectCreateMixin, View):
     model_form = BlogPostForm
     template = 'blog/post_create.html'

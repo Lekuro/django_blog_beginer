@@ -14,5 +14,5 @@ urlpatterns = [
     # path('blogpost/<str:slug>/', blogpost_detail,
     #      name='blogpost_detail_endpoint'),
     # path('tag/<str:slug>/', tag_detail, name='tag_detail_endpoint'),
-
+    path('tag/<str:slug>/update/', TagUpdateView.as_view(), name='tag_update_endpoint'),
 ]
