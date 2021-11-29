@@ -52,4 +52,7 @@ class BlogPostForm(forms.ModelForm):
         new_slug=self.cleaned_data.get('slug').lower()
         if new_slug=='create':
             raise ValidationError('Slug can not be "Create"')
+        if BlogTag.objects.filter(slug__iexact=new_slug).count():
+            raise ValidationError(
+                f'Slug must be unique. We have "{new_slug}".')
         return new_slug

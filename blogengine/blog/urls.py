@@ -3,7 +3,7 @@ from blog.views import *
 
 urlpatterns = [
     path('hello/', hello),
-    path('blogposts/', blogposts_list, name='blogpost_list_endpoint'),
+    path('blogposts/', blogposts_list, name='blogposts_list_endpoint'),
     path('blogpost/create/', BlogPostCreateView.as_view(),
          name='blogpost_create_endpoint'),
     path('blogpost/<str:slug>/', BlogPostDetailView.as_view(),

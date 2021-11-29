@@ -30,20 +30,25 @@ class BlogPost(models.Model):
         return reverse('blogpost_delete_endpoint', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
-        if not self.id:
-            self.slug = gen_slug(self.title)
+        # if not self.id:
+        self.slug = gen_slug(self.title)
         super().save(*args, **kwargs)
 
     class Meta:
-        ordering=['-date_pub']
+        ordering = ['-date_pub']
 
 
 class BlogTag(models.Model):
     title = models.CharField(max_length=50)
     slug = models.SlugField(max_length=50, blank=True, unique=True)
 
+    def save(self, *args, **kwargs):
+        # if not self.id:
+        self.slug = gen_slug(self.title)
+        super().save(*args, **kwargs)
+
     def __str__(self) -> str:
-        return self.title
+        return f'title: {self.title}, slug: {self.slug}.'
 
     def get_absolute_url(self):
         return reverse('tag_detail_endpoint', kwargs={'slug': self.slug})
@@ -57,4 +62,4 @@ class BlogTag(models.Model):
         return reverse('tag_delete_endpoint', kwargs={'slug': self.slug})
 
     class Meta:
-        ordering=['title']
+        ordering = ['title']

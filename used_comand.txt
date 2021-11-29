@@ -121,3 +121,7 @@ page1
 paginator
 page1.paginator
 exit()
+
+
+<form action="{% url 'blogpost_delete_endpoint' slug=tag.slug %}" method='post'>
+<a href="{%url 'tag_detail_endpoint' slug=tag.slug%}">Cansel</a>

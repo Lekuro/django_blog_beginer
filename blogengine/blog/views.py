@@ -39,42 +39,42 @@ def tags_list(request):
     return render(request, 'blog/tags_list.html', context={'tags': tags})
 
 
-# class BlogPostDeleteView(ObjectDeleteMixin,View):
-#     model = BlogPost
-#     template = 'blog/post_delete.html'
-#     redirect_url = 'blogposts_list_endpoint'
+class BlogPostDeleteView(ObjectDeleteMixin,View):
+    model = BlogPost
+    template = 'blog/post_delete.html'
+    redirect_url = 'blogposts_list_endpoint'
 
-class BlogPostDeleteView(LoginRequiredMixin, View):
-    raise_exception = True
+# class BlogPostDeleteView(LoginRequiredMixin, View):
+#     raise_exception = True
 
-    def get(self, request, slug):
-        # post = BlogPost.objects.get(slug__iexact=slug)
-        post = get_object_or_404(BlogPost, slug__iexact=slug)
-        return render(request, 'blog/post_delete.html', context={'blogpost': post})
+#     def get(self, request, slug):
+#         # post = BlogPost.objects.get(slug__iexact=slug)
+#         post = get_object_or_404(BlogPost, slug__iexact=slug)
+#         return render(request, 'blog/post_delete.html', context={'blogpost': post})
 
-    def post(self, request, slug):
-        post = BlogPost.objects.get(slug__iexact=slug)
-        post.delete()
-        return redirect(reverse('blogposts_list_endpoint'))
-
-
-# class TagDeleteView(ObjectDeleteMixin, View):
-#     model = BlogTag
-#     template = 'blog/tag_delete.html'
-#     redirect_url = 'tags_list_endpoint'
+#     def post(self, request, slug):
+#         post = BlogPost.objects.get(slug__iexact=slug)
+#         post.delete()
+#         return redirect(reverse('blogposts_list_endpoint'))
 
 
-class TagDeleteView(LoginRequiredMixin, View):
-    raise_exception = True
+class TagDeleteView(ObjectDeleteMixin, View):
+    model = BlogTag
+    template = 'blog/tag_delete.html'
+    redirect_url = 'tags_list_endpoint'
 
-    def get(self, request, slug):
-        tag = BlogTag.objects.get(slug__iexact=slug)
-        return render(request, 'blog/tag_delete.html', context={'tag': tag})
 
-    def post(self, request, slug):
-        tag = BlogTag.objects.get(slug__iexact=slug)
-        tag.delete()
-        return redirect(reverse('tags_list_endpoint'))
+# class TagDeleteView(LoginRequiredMixin, View):
+#     raise_exception = True
+
+#     def get(self, request, slug):
+#         tag = BlogTag.objects.get(slug__iexact=slug)
+#         return render(request, 'blog/tag_delete.html', context={'tag': tag})
+
+#     def post(self, request, slug):
+#         tag = BlogTag.objects.get(slug__iexact=slug)
+#         tag.delete()
+#         return redirect(reverse('tags_list_endpoint'))
 
 
 class BlogPostUpdateView(LoginRequiredMixin, ObjectUpdateMixin, View):
@@ -84,29 +84,29 @@ class BlogPostUpdateView(LoginRequiredMixin, ObjectUpdateMixin, View):
     template = 'blog/post_update.html'
 
 
-# class TagUpdateView(LoginRequiredMixin, ObjectUpdateMixin, View):
+class TagUpdateView(LoginRequiredMixin, ObjectUpdateMixin, View):
     raise_exception = True
-#     model = BlogTag
-#     model_form = TagForm
-#     template = 'blog/tag_update.html'
+    model = BlogTag
+    model_form = TagForm
+    template = 'blog/tag_update.html'
 
 
-class TagUpdateView(LoginRequiredMixin, View):
-    raise_exception = True
+# class TagUpdateView(LoginRequiredMixin, View):
+#     raise_exception = True
 
-    def get(self, request, slug):
-        tag = BlogTag.objects.get(slug__iexact=slug)
-        bound_form = TagForm(instance=tag)
-        return render(request, 'blog/tag_update.html', context={'form': bound_form, 'tag': tag})
+#     def get(self, request, slug):
+#         tag = BlogTag.objects.get(slug__iexact=slug)
+#         bound_form = TagForm(instance=tag)
+#         return render(request, 'blog/tag_update.html', context={'form': bound_form, 'tag': tag})
 
-    def post(self, request, slug):
-        tag = BlogTag.objects.get(slug__iexact=slug)
-        bound_form = TagForm(request.POST, instance=tag)
+#     def post(self, request, slug):
+#         tag = BlogTag.objects.get(slug__iexact=slug)
+#         bound_form = TagForm(request.POST, instance=tag)
 
-        if bound_form.is_valid():
-            edited_tag = bound_form.save()
-            return redirect(edited_tag)
-        return render(request, 'blog/tag_update.html', context={'form': bound_form, 'tag': tag})
+#         if bound_form.is_valid():
+#             edited_tag = bound_form.save()
+#             return redirect(edited_tag)
+#         return render(request, 'blog/tag_update.html', context={'form': bound_form, 'tag': tag})
 
 
 class BlogPostCreateView(LoginRequiredMixin, ObjectCreateMixin, View):

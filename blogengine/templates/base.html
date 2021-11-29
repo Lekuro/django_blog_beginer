@@ -35,7 +35,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{% url 'blogpost_list_endpoint'  %}">Blog
+                        <a class="nav-link active" aria-current="page" href="{% url 'blogposts_list_endpoint'  %}">Blog
                             posts</a>
                     </li>
                     <li class="nav-item">
@@ -56,6 +56,7 @@
         <div class="row">
             <div class="col-6 offset-md-2">
                 {% block content %}There is no content!{% endblock content %}
+                {% if is_paginated %}
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
                         <li class="page-item {%if not prev_url%}disabled{% endif %}">
@@ -79,6 +80,7 @@
                         </li>
                     </ul>
                 </nav>
+                {% endif %}
             </div>
         </div>
     </div>

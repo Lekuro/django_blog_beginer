@@ -5,9 +5,7 @@ Edit tag "{{tag.title|title}}" - {{ block.super }}
 {% endblock %}
 
 {% block content %}
-<!-- <p>{{blogtag.get_update_url}}</p> -->
-<!-- <form action="{% url 'tag_update_endpoint' slug=tag.slug %}" method='post'> -->
-<form action="{{tag.get_update_url}}" method='post'>
+<form action="{{blogtag.get_update_url}}" method='post'>
     {% csrf_token %}
     {% for field in form %}
     <div class="form-group">
