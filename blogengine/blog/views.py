@@ -8,13 +8,30 @@ from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 
+
 def blogposts_list(request):
     blogposts = BlogPost.objects.all()
-    paginator=Paginator(blogposts,2)
-    page_number= request.GET.get('page',1)
-    page=paginator.get_page(page_number)
+    paginator = Paginator(blogposts, 2)
+    page_number = request.GET.get('page', 1)
+    page = paginator.get_page(page_number)
+
+    is_paginated = page.has_other_pages()
+    if page.has_previous():
+        prev_url = f'?page={page.previous_page_number()}'
+        print('prev_url',prev_url)
+    else:
+        prev_url = ''
+    if page.has_next():
+        next_url = f'?page={page.next_page_number()}'
+        print('next_url',next_url)
+    else:
+        next_url = ''
+    context = {'page_obj': page,
+               'is_paginated': is_paginated,
+               'next_url': next_url,
+               'prev_url': prev_url}
     # return render(request, 'blog/index.html', context={'blogposts': page.object_list})
-    return render(request, 'blog/index.html', context={'page_obj': page})
+    return render(request, 'blog/index.html', context=context)
 
 
 def tags_list(request):
@@ -28,7 +45,8 @@ def tags_list(request):
 #     redirect_url = 'blogposts_list_endpoint'
 
 class BlogPostDeleteView(LoginRequiredMixin, View):
-    raise_exception =True
+    raise_exception = True
+
     def get(self, request, slug):
         # post = BlogPost.objects.get(slug__iexact=slug)
         post = get_object_or_404(BlogPost, slug__iexact=slug)
@@ -47,7 +65,8 @@ class BlogPostDeleteView(LoginRequiredMixin, View):
 
 
 class TagDeleteView(LoginRequiredMixin, View):
-    raise_exception =True
+    raise_exception = True
+
     def get(self, request, slug):
         tag = BlogTag.objects.get(slug__iexact=slug)
         return render(request, 'blog/tag_delete.html', context={'tag': tag})
@@ -59,21 +78,22 @@ class TagDeleteView(LoginRequiredMixin, View):
 
 
 class BlogPostUpdateView(LoginRequiredMixin, ObjectUpdateMixin, View):
-    raise_exception =True
+    raise_exception = True
     model = BlogPost
     model_form = BlogPostForm
     template = 'blog/post_update.html'
 
 
 # class TagUpdateView(LoginRequiredMixin, ObjectUpdateMixin, View):
-    raise_exception =True
+    raise_exception = True
 #     model = BlogTag
 #     model_form = TagForm
 #     template = 'blog/tag_update.html'
 
 
-class TagUpdateView(LoginRequiredMixin, View): 
-    raise_exception =True
+class TagUpdateView(LoginRequiredMixin, View):
+    raise_exception = True
+
     def get(self, request, slug):
         tag = BlogTag.objects.get(slug__iexact=slug)
         bound_form = TagForm(instance=tag)
@@ -92,7 +112,7 @@ class TagUpdateView(LoginRequiredMixin, View):
 class BlogPostCreateView(LoginRequiredMixin, ObjectCreateMixin, View):
     model_form = BlogPostForm
     template = 'blog/post_create.html'
-    raise_exception =True
+    raise_exception = True
 
     # def get(self, request):
     #     form = BlogPostForm()
@@ -109,7 +129,7 @@ class BlogPostCreateView(LoginRequiredMixin, ObjectCreateMixin, View):
 class TagCreateView(LoginRequiredMixin, ObjectCreateMixin, View):
     model_form = TagForm
     template = 'blog/tag_create.html'
-    raise_exception =True
+    raise_exception = True
 
     # def get(self, request):
     #     print(request)
