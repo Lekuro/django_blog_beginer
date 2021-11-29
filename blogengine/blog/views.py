@@ -7,23 +7,28 @@ from blog.forms import TagForm, BlogPostForm
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 
 def blogposts_list(request):
-    blogposts = BlogPost.objects.all()
+    search_query = request.GET.get('search', '')
+    if search_query:
+        blogposts = BlogPost.objects.filter(
+            Q(title__icontains=search_query) | Q(body__icontains=search_query))
+    else:
+        blogposts = BlogPost.objects.all()
     paginator = Paginator(blogposts, 2)
     page_number = request.GET.get('page', 1)
     page = paginator.get_page(page_number)
-
     is_paginated = page.has_other_pages()
     if page.has_previous():
         prev_url = f'?page={page.previous_page_number()}'
-        print('prev_url',prev_url)
+        print('prev_url', prev_url)
     else:
         prev_url = ''
     if page.has_next():
         next_url = f'?page={page.next_page_number()}'
-        print('next_url',next_url)
+        print('next_url', next_url)
     else:
         next_url = ''
     context = {'page_obj': page,
@@ -39,7 +44,7 @@ def tags_list(request):
     return render(request, 'blog/tags_list.html', context={'tags': tags})
 
 
-class BlogPostDeleteView(ObjectDeleteMixin,View):
+class BlogPostDeleteView(ObjectDeleteMixin, View):
     model = BlogPost
     template = 'blog/post_delete.html'
     redirect_url = 'blogposts_list_endpoint'
