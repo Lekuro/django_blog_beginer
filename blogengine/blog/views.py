@@ -4,11 +4,17 @@ from blog.models import BlogPost, BlogTag
 from django.views.generic import View
 from blog.utils import *
 from blog.forms import TagForm, BlogPostForm
-
+from django.urls import reverse
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
 
 def blogposts_list(request):
     blogposts = BlogPost.objects.all()
-    return render(request, 'blog/index.html', context={'blogposts': blogposts})
+    paginator=Paginator(blogposts,2)
+    page_number= request.GET.get('page',1)
+    page=paginator.get_page(page_number)
+    # return render(request, 'blog/index.html', context={'blogposts': page.object_list})
+    return render(request, 'blog/index.html', context={'page_obj': page})
 
 
 def tags_list(request):
@@ -16,17 +22,58 @@ def tags_list(request):
     return render(request, 'blog/tags_list.html', context={'tags': tags})
 
 
-class BlogPostUpdateView(ObjectUpdateMixin, View):
+# class BlogPostDeleteView(ObjectDeleteMixin,View):
+#     model = BlogPost
+#     template = 'blog/post_delete.html'
+#     redirect_url = 'blogposts_list_endpoint'
+
+class BlogPostDeleteView(LoginRequiredMixin, View):
+    raise_exception =True
+    def get(self, request, slug):
+        # post = BlogPost.objects.get(slug__iexact=slug)
+        post = get_object_or_404(BlogPost, slug__iexact=slug)
+        return render(request, 'blog/post_delete.html', context={'blogpost': post})
+
+    def post(self, request, slug):
+        post = BlogPost.objects.get(slug__iexact=slug)
+        post.delete()
+        return redirect(reverse('blogposts_list_endpoint'))
+
+
+# class TagDeleteView(ObjectDeleteMixin, View):
+#     model = BlogTag
+#     template = 'blog/tag_delete.html'
+#     redirect_url = 'tags_list_endpoint'
+
+
+class TagDeleteView(LoginRequiredMixin, View):
+    raise_exception =True
+    def get(self, request, slug):
+        tag = BlogTag.objects.get(slug__iexact=slug)
+        return render(request, 'blog/tag_delete.html', context={'tag': tag})
+
+    def post(self, request, slug):
+        tag = BlogTag.objects.get(slug__iexact=slug)
+        tag.delete()
+        return redirect(reverse('tags_list_endpoint'))
+
+
+class BlogPostUpdateView(LoginRequiredMixin, ObjectUpdateMixin, View):
+    raise_exception =True
     model = BlogPost
     model_form = BlogPostForm
     template = 'blog/post_update.html'
 
 
-class TagUpdateView(View):  # ObjectUpdateMixin,
-    # model = BlogTag
-    # model_form = TagForm
-    # template = 'blog/tag_update.html'
+# class TagUpdateView(LoginRequiredMixin, ObjectUpdateMixin, View):
+    raise_exception =True
+#     model = BlogTag
+#     model_form = TagForm
+#     template = 'blog/tag_update.html'
 
+
+class TagUpdateView(LoginRequiredMixin, View): 
+    raise_exception =True
     def get(self, request, slug):
         tag = BlogTag.objects.get(slug__iexact=slug)
         bound_form = TagForm(instance=tag)
@@ -42,9 +89,10 @@ class TagUpdateView(View):  # ObjectUpdateMixin,
         return render(request, 'blog/tag_update.html', context={'form': bound_form, 'tag': tag})
 
 
-class BlogPostCreateView(ObjectCreateMixin, View):
+class BlogPostCreateView(LoginRequiredMixin, ObjectCreateMixin, View):
     model_form = BlogPostForm
     template = 'blog/post_create.html'
+    raise_exception =True
 
     # def get(self, request):
     #     form = BlogPostForm()
@@ -58,9 +106,10 @@ class BlogPostCreateView(ObjectCreateMixin, View):
     #     return render(request, 'blog/post_create.html', context={'form': bound_form})
 
 
-class TagCreateView(ObjectCreateMixin, View):
+class TagCreateView(LoginRequiredMixin, ObjectCreateMixin, View):
     model_form = TagForm
     template = 'blog/tag_create.html'
+    raise_exception =True
 
     # def get(self, request):
     #     print(request)

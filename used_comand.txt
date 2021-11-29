@@ -12,6 +12,8 @@ python manage.py migrate
 python manage.py runserver
 ./manage.py runserver
 
+python manage.py createsuperuser
+
 ModelViewControler=mvc
 
 python manage.py shell
@@ -97,4 +99,25 @@ slugify('One text')
 slugify('o _ - 0 !@#$%^&*()+\?`~"=-|1')     'o-_-0-1'
 help(slugify)  q    for exit
 slugify('хай всім',allow_unicode=True)
+exit()
+
+./manage.py shell
+from django.core.paginator import Paginator
+from blog.models import BlogPost
+allpost=BlogPost.objects.all()
+allpost
+<QuerySet [<BlogPost: post title>, <BlogPost: post_title>, <BlogPost: post_title3>, <BlogPost: post_title4>, <BlogPost: post_title5>, <BlogPost: new post>, <BlogPost: post updated>, <BlogPost: tt>, <BlogPost: post edited>, <BlogPost: post update>, <BlogPost: gen slug>, <BlogPost: create mixin>]>
+
+paginator=Paginator(allpost, 2)
+<console>:1: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'blog.models.BlogPost'> QuerySet.
+бо не задано в модельці порядок
+dir(paginator)
+page1=paginator.get_page(1)
+dir(page1)
+page1.object_list
+page1.number
+paginator.page_range
+page1
+paginator
+page1.paginator
 exit()

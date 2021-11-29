@@ -57,7 +57,7 @@ ROOT_URLCONF = 'blogengine.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [Path('templates')],#os.path.join(BASE_DIR,'templates')
+        'DIRS': [Path('templates')],  # os.path.join(BASE_DIR,'templates')
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -121,6 +121,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [Path('static')]  # os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

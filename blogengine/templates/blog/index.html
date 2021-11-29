@@ -4,7 +4,7 @@
 
 {% block content %}
 <h1 class="mb-3">Posts</h1>
-{% for blogpost in blogposts %}
+{% for blogpost in page_obj.object_list %}
 {% include 'blog/includes/blogpost_card_template.html' %}
 {% endfor %}
 {% endblock %}

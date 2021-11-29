@@ -26,10 +26,16 @@ class BlogPost(models.Model):
     def get_update_url(self):
         return reverse('blogpost_update_endpoint', kwargs={'slug': self.slug})
 
+    def get_delete_url(self):
+        return reverse('blogpost_delete_endpoint', kwargs={'slug': self.slug})
+
     def save(self, *args, **kwargs):
         if not self.id:
             self.slug = gen_slug(self.title)
         super().save(*args, **kwargs)
+
+    class Meta:
+        ordering=['-date_pub']
 
 
 class BlogTag(models.Model):
@@ -43,5 +49,12 @@ class BlogTag(models.Model):
         return reverse('tag_detail_endpoint', kwargs={'slug': self.slug})
 
     def get_update_url(self):
-        print('self.slug',self.slug)
+        print('self.slug1', self.slug)
+        # return('<h1> Hello</h1>')
         return reverse('tag_update_endpoint', kwargs={'slug': self.slug})
+
+    def get_delete_url(self):
+        return reverse('tag_delete_endpoint', kwargs={'slug': self.slug})
+
+    class Meta:
+        ordering=['title']
