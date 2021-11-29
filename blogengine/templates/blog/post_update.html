@@ -1,12 +1,11 @@
 {% extends 'blog/base_blog.html' %}
 
 {% block title %}
-Edit tag "{{tag.title|title}}" - {{ block.super }}
-{% endblock %}
+Edit post "{{blogpost.title|title}}" - {{block.super}}
+{% endblock title %}
 
 {% block content %}
-<!-- <form action="{% url 'tag_update_endpoint' slug=tag.slug %}" method='post'> -->
-<form action="{{tag.get_update_url}}" method='post'>
+<form action="{{blogpost.get_update_url}}" method="post">
     {% csrf_token %}
     {% for field in form %}
     <div class="form-group">
@@ -15,13 +14,10 @@ Edit tag "{{tag.title|title}}" - {{ block.super }}
             {{field.errors}}
         </div>
         {% endif %}
-
         {{field.label}}
         {{field}}
     </div>
     {% endfor %}
-    <!-- {{form.title}}
-    {{form.slug}} -->
-    <button type="submit" class="btn btn-primary mt-1">Update Tag</button>
+    <button type="submit"class="btn btn-primary mt-1">Update post</button>
 </form>
-{% endblock %}
+{% endblock content %}

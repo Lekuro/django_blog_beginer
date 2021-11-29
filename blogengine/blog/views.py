@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponse
 from blog.models import BlogPost, BlogTag
 from django.views.generic import View
-from blog.utils import ObjectDetailMixin, ObjectCreateMixin
+from blog.utils import *
 from blog.forms import TagForm, BlogPostForm
 
 
@@ -16,7 +16,17 @@ def tags_list(request):
     return render(request, 'blog/tags_list.html', context={'tags': tags})
 
 
-class TagUpdateView(View):
+class BlogPostUpdateView(ObjectUpdateMixin, View):
+    model = BlogPost
+    model_form = BlogPostForm
+    template = 'blog/post_update.html'
+
+
+class TagUpdateView(View):  # ObjectUpdateMixin,
+    # model = BlogTag
+    # model_form = TagForm
+    # template = 'blog/tag_update.html'
+
     def get(self, request, slug):
         tag = BlogTag.objects.get(slug__iexact=slug)
         bound_form = TagForm(instance=tag)

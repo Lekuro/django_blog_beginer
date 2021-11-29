@@ -24,7 +24,7 @@ class BlogPost(models.Model):
         return reverse('blogpost_detail_endpoint', kwargs={'slug': self.slug})
 
     def get_update_url(self):
-        return reverse('tag_update_endpoint', kwargs={'slug': self.slug})
+        return reverse('blogpost_update_endpoint', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -34,7 +34,7 @@ class BlogPost(models.Model):
 
 class BlogTag(models.Model):
     title = models.CharField(max_length=50)
-    slug = models.SlugField(max_length=50, unique=True)
+    slug = models.SlugField(max_length=50, blank=True, unique=True)
 
     def __str__(self) -> str:
         return self.title
@@ -43,4 +43,5 @@ class BlogTag(models.Model):
         return reverse('tag_detail_endpoint', kwargs={'slug': self.slug})
 
     def get_update_url(self):
+        print('self.slug',self.slug)
         return reverse('tag_update_endpoint', kwargs={'slug': self.slug})
